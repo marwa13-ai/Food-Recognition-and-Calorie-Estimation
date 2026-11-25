@@ -10,7 +10,8 @@ NUTRITION_DB = {
         "fibres_100g": 1.5,
         "sucres_100g": 14.0,
         "description": "Pâte levée frite dorée et moelleuse, souvent sucrée.",
-        "quoi_manger": "Évite de les manger seuls le ventre vide (pic de sucre). Accompagne-les d'une boisson non sucrée (café, thé, eau) et, au repas suivant, privilégie des légumes verts + une bonne source de protéines (œufs, poulet, poisson, légumineuses) pour rééquilibrer."
+        "avec": "Évite de les manger seuls le ventre vide. Prends-les plutôt avec une boisson chaude non sucrée (café, thé, infusion) ou de l'eau, et garde une portion raisonnable car la pâte frite est dense en sucres rapides et en lipides.",
+        "ensuite": "Au repas suivant, compose une assiette riche en fibres et en protéines maigres (ex. légumes verts ou salade composée + poulet, poisson, œufs ou lentilles) et limite les sucres ajoutés sur le reste de la journée."
     },
     "apple_pie": {
         "nom_fr": "Tarte aux pommes",
@@ -23,7 +24,8 @@ NUTRITION_DB = {
         "fibres_100g": 1.6,
         "sucres_100g": 15.5,
         "description": "Part de tarte aux pommes dorée avec pâte et garniture aux fruits.",
-        "quoi_manger": "Si tu la prends en dessert ou au goûter, garde une part normale sans boule de glace ni crème. Au repas suivant, mise sur une assiette riche en protéines maigres et fibres (salade composée, légumes cuits, viandes blanches ou poissons)."
+        "avec": "Consomme la part sans ajouter de glace ou de crème chantilly, et accompagne-la d'une boisson sans sucre pour éviter d'alourdir l'apport calorique et sucré.",
+        "ensuite": "Au repas suivant, privilégie des légumes cuits ou crus, une source de protéines complète (viande blanche, poisson, œufs, tofu) et des féculents complets en quantité modérée."
     },
     "pizza": {
         "nom_fr": "Pizza",
@@ -36,7 +38,8 @@ NUTRITION_DB = {
         "fibres_100g": 2.3,
         "sucres_100g": 3.6,
         "description": "Portion de pizza (pâte, sauce tomate, fromage et garniture).",
-        "quoi_manger": "Au restaurant, commande une salade verte ou des crudités en entrée pour apporter des fibres et calmer la faim plus vite. Choisis des garnitures riches en protéines (poulet, thon, champignons, légumes) plutôt que trop de charcuterie grasse."
+        "avec": "Commande une salade verte ou des crudités en accompagnement pour apporter des fibres et favoriser la satiété, et choisis de l'eau plutôt qu'un soda sucré.",
+        "ensuite": "Au repas suivant, allège sur les plats gras et les féculents : mise sur des légumes variés, une belle portion de protéines maigres et un fruit frais."
     },
     "hamburger": {
         "nom_fr": "Hamburger",
@@ -49,7 +52,8 @@ NUTRITION_DB = {
         "fibres_100g": 1.8,
         "sucres_100g": 4.2,
         "description": "Burger complet avec pain, steak/protéine, fromage et garniture.",
-        "quoi_manger": "Pour un repas équilibré au restaurant, accompagne le burger de légumes ou d'une petite salade plutôt que de grandes frites, et évite les sodas sucrés (préfère de l'eau ou une boisson zéro)."
+        "avec": "Accompagne le burger de légumes grillés ou d'une salade plutôt que de grandes frites, et évite les sauces très riches ou boissons sucrées.",
+        "ensuite": "Au repas suivant, privilégie un repas plus léger riche en fibres (légumes, soupe de légumes ou salade) avec une source de protéines simple."
     },
     "sushi": {
         "nom_fr": "Sushi",
@@ -62,7 +66,8 @@ NUTRITION_DB = {
         "fibres_100g": 1.2,
         "sucres_100g": 4.5,
         "description": "Assortiment de sushis (riz assaisonné, poisson, nori).",
-        "quoi_manger": "Complète avec une soupe miso, une salade de chou ou d'algues (wakame) et des edamame pour ajouter des fibres et des protéines. Dose la sauce soja pour limiter l'excès de sel."
+        "avec": "Ajoute une soupe miso, une salade de chou ou d'algues et des edamame pour augmenter les fibres et les protéines, tout en dosant la sauce soja.",
+        "ensuite": "Au repas suivant, ajoute des légumes et des protéines si le repas précédent était surtout composé de riz blanc, et bois de l'eau pour compenser le sel."
     },
     "ramen": {
         "nom_fr": "Ramen",
@@ -75,7 +80,8 @@ NUTRITION_DB = {
         "fibres_100g": 1.4,
         "sucres_100g": 1.2,
         "description": "Bol de nouilles en bouillon avec garnitures (œuf, viande, légumes).",
-        "quoi_manger": "Mange d'abord les légumes, l'œuf et la viande/protéine, puis les nouilles, et laisse une partie du bouillon au fond du bol si tu veux limiter le sodium et les graisses."
+        "avec": "Commence par les légumes, l'œuf et la viande/protéine du bol, puis les nouilles, et laisse une partie du bouillon si tu veux limiter le sodium.",
+        "ensuite": "Au repas suivant, privilégie des aliments frais (légumes, fruits, protéines maigres) et évite d'ajouter du sel supplémentaire."
     },
     "caesar_salad": {
         "nom_fr": "Salade César",
@@ -88,7 +94,8 @@ NUTRITION_DB = {
         "fibres_100g": 2.4,
         "sucres_100g": 1.8,
         "description": "Salade romaine, croûtons, parmesan et sauce César.",
-        "quoi_manger": "Ajoute du poulet grillé, du saumon ou des œufs durs si tu veux plus de protéines et de satiété, et demande la sauce à part pour ajuster la quantité."
+        "avec": "Ajoute une source de protéines maigres (poulet grillé, œuf, poisson) pour un plat complet, et demande la sauce à part pour doser les lipides.",
+        "ensuite": "Si tu as encore faim plus tard, complète au repas suivant avec une portion de glucides complexes (riz complet, pommes de terre, pain complet) et un fruit."
     },
     "waffles": {
         "nom_fr": "Gaufres",
@@ -101,13 +108,13 @@ NUTRITION_DB = {
         "fibres_100g": 1.7,
         "sucres_100g": 8.5,
         "description": "Gaufre dorée cuite au gaufrier.",
-        "quoi_manger": "Associe-la à des fruits frais (fraises, banane, myrtilles) ou un yaourt grec / fromage blanc pour apporter des protéines et limiter l'excès de sucre."
+        "avec": "Associe-la à des fruits frais et à une source de protéines (yaourt grec ou fromage blanc) pour améliorer la satiété et limiter les pics de sucre.",
+        "ensuite": "Au repas suivant, privilégie des légumes, des protéines maigres et des graisses de qualité (huile d'olive, avocat, noix en petite quantité)."
     }
 }
 
 
 def calculer_besoin_calorique(poids_kg: float, taille_cm: float, age: int, sexe: str, activite: str, objectif: str) -> int:
-    # Formule de Mifflin-St Jeor
     if sexe == "Femme":
         bmr = 10 * poids_kg + 6.25 * taille_cm - 5 * age - 161
     else:
@@ -125,7 +132,7 @@ def calculer_besoin_calorique(poids_kg: float, taille_cm: float, age: int, sexe:
         cible = tdee - 400
     elif objectif == "Masse musculaire":
         cible = tdee + 300
-    else:  # Juste savoir / Maintien
+    else:
         cible = tdee
 
     return max(1200, int(round(cible / 10.0) * 10))
@@ -148,7 +155,8 @@ def get_nutritional_info(dish_key: str) -> dict:
             "fibres_100g": 2.0,
             "sucres_100g": 4.0,
             "description": f"Plat identifié comme {nom_propre}. Estimation calculée sur une portion standard.",
-            "quoi_manger": "Pour équilibrer ce plat : accompagne-le d'une portion de légumes riches en fibres, assure-toi d'avoir une source de protéines (viande, poisson, œufs, légumineuses) et garde une hydratation régulière."
+            "avec": f"Accompagne {nom_propre} d'une portion de légumes riches en fibres et d'une boisson non sucrée pour favoriser la satiété.",
+            "ensuite": "Au repas suivant, équilibre tes apports selon ton objectif en associant protéines maigres, légumes et féculents adaptés à ta faim."
         }
 
     grammes = base["portion_g"]
@@ -171,7 +179,8 @@ def get_nutritional_info(dish_key: str) -> dict:
         "categorie": base["categorie"],
         "portion_g": grammes,
         "description": base["description"],
-        "quoi_manger": base["quoi_manger"],
+        "avec": base["avec"],
+        "ensuite": base["ensuite"],
         "calories": calories,
         "proteines": proteines,
         "glucides": glucides,
