@@ -1,18 +1,22 @@
 import os
+import urllib.request
 from PIL import Image
 import streamlit as st
 import torch
 import torch.nn as nn
 from torchvision import models, transforms
-from nutrition import get_nutritional_info
+from nutrition import calculer_besoin_calorique, get_nutritional_info
+
+# Remplace cette URL par le lien exact de ton fichier model-food.pth dans GitHub Releases
+MODEL_URL = "https://github.com/marwa13-ai/Food-Recognition-and-Calorie-Estimation/releases/download/v1.0-model/model-food.pth"
+MODEL_PATH = "model-food.pth"
 
 st.set_page_config(
     page_title="CalorieLens — Nutri & Food AI",
     page_icon="🥗",
-    layout="centered"
+    layout="wide"
 )
 
-# Style CSS moderne inspiré des applications de suivi nutritionnel
 st.markdown("""
 <style>
     .main-header {
@@ -38,6 +42,7 @@ st.markdown("""
         border-radius: 16px;
         padding: 1.2rem 1.4rem;
         box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+        margin-top: 1rem;
         margin-bottom: 1rem;
     }
     .badge {
@@ -105,30 +110,68 @@ transform = transforms.Compose([
     transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
 ])
 
+
+def ensure_model_downloaded() -> bool:
+    if os.path.exists(MODEL_PATH) and os.path.getsize(MODEL_PATH) > 1_000_000:
+        return True
+    if "TON_USER" in MODEL_URL or "TON_REPO" in MODEL_URL:
+        return False
+    try:
+        urllib.request.urlretrieve(MODEL_URL, MODEL_PATH)
+        return os.path.exists(MODEL_PATH) and os.path.getsize(MODEL_PATH) > 1_000_000
+    except Exception:
+        return False
+
+
 @st.cache_resource
 def load_model():
+    if not ensure_model_downloaded():
+        return None
+
     model = models.resnet50(weights=None)
     num_features = model.fc.in_features
     model.fc = nn.Linear(num_features, len(CLASSES_FOOD101))
 
-    if os.path.exists("model-food.pth") and os.path.getsize("model-food.pth") > 1000:
-        try:
-            device = torch.device("cpu")
-            state_dict = torch.load("model-food.pth", map_location=device)
-            model.load_state_dict(state_dict)
-            model.eval()
-            return model
-        except Exception:
-            return None
-    return None
+    try:
+        device = torch.device("cpu")
+        state_dict = torch.load(MODEL_PATH, map_location=device)
+        model.load_state_dict(state_dict)
+        model.eval()
+        return model
+    except Exception:
+        if os.path.exists(MODEL_PATH):
+            os.remove(MODEL_PATH)
+        return None
+
 
 if "journal" not in st.session_state:
     st.session_state.journal = []
 
-# Barre latérale : objectif journalier & journal des repas
+# Barre latérale gauche : Profil, Objectif & Journal
 with st.sidebar:
-    st.header(" Objectif du jour")
-    objectif_kcal = st.number_input("Objectif calorique (kcal)", min_value=1000, max_value=5000, value=2000, step=50)
+    st.header(" Ton profil & objectif")
+    taille_cm = st.number_input("Taille (cm)", min_value=120, max_value=230, value=168, step=1)
+    poids_kg = st.number_input("Poids (kg)", min_value=35.0, max_value=220.0, value=65.0, step=0.5)
+    age = st.number_input("Âge", min_value=14, max_value=100, value=22, step=1)
+    sexe = st.selectbox("Sexe biologique", ["Femme", "Homme"])
+    activite = st.selectbox(
+        "Niveau d'activité",
+        [
+            "Sédentaire (peu ou pas d'exercice)",
+            "Légèrement actif (1–3j/semaine)",
+            "Modérément actif (3–5j/semaine)",
+            "Très actif (6–7j/semaine)",
+        ],
+        index=1
+    )
+    objectif = st.radio(
+        "Ton but",
+        ["Perdre du poids", "Juste savoir", "Masse musculaire"],
+        index=1
+    )
+
+    objectif_kcal = calculer_besoin_calorique(poids_kg, taille_cm, age, sexe, activite, objectif)
+    st.metric(" Calories conseillées / jour", f"{objectif_kcal} kcal")
 
     total_mange = sum(item["calories"] for item in st.session_state.journal)
     restant = objectif_kcal - total_mange
@@ -143,34 +186,32 @@ with st.sidebar:
     if not st.session_state.journal:
         st.caption("Aucun repas ajouté pour l'instant.")
     else:
-        for idx, repas in enumerate(st.session_state.journal):
-            st.write(f"• **{repas['nom']}** ({repas['grammes']}g) — {repas['calories']} kcal")
+        for repas in st.session_state.journal:
+            st.write(f"• **{repas['nom']}** — {repas['calories']} kcal")
         if st.button("Vider le journal"):
             st.session_state.journal = []
             st.rerun()
 
-# En-tête principal
+# Zone principale droite
 st.markdown("""
 <div class="main-header">
     <h1> CalorieLens AI</h1>
-    <p>Scan de plat, estimation calorique selon la portion et suivi nutritionnel quotidien</p>
+    <p>Reconnaissance de plat, calories sur portion standard et conseils repas</p>
 </div>
 """, unsafe_allow_html=True)
 
 model = load_model()
 if model is None:
-    st.info("ℹ Mode démonstration actif (`model-food.pth` absent sur cet environnement : simulation sur *beignets* activée).")
+    st.caption("Mode démonstration actif (`model-food.pth` non chargé sur cet environnement).")
 
-uploaded_file = st.file_uploader(" Prends ou importe la photo de ton plat", type=["jpg", "jpeg", "png"])
+uploaded_file = st.file_uploader("📸 Prends ou importe la photo de ton plat", type=["jpg", "jpeg", "png"])
 
 if uploaded_file is not None:
     image = Image.open(uploaded_file).convert("RGB")
-    st.image(image, caption="Aperçu du repas", use_column_width=True)
-
-    grammes = st.slider(" Poids estimé de ta portion (en grammes)", min_value=30, max_value=800, value=150, step=10)
+    st.image(image, caption="Photo du plat", use_container_width=True)
 
     if st.button("Analyser le repas", type="primary", use_container_width=True):
-        with st.spinner("Analyse visuelle et calcul nutritionnel..."):
+        with st.spinner("Analyse de l'image en cours..."):
             if model is not None:
                 input_tensor = transform(image).unsqueeze(0)
                 with torch.no_grad():
@@ -186,46 +227,56 @@ if uploaded_file is not None:
             st.session_state.derniere_analyse = {
                 "plat_cle": plat_cle,
                 "confiance": confiance_pct,
-                "grammes": grammes
             }
 
 if "derniere_analyse" in st.session_state:
     analyse = st.session_state.derniere_analyse
-    info = get_nutritional_info(analyse["plat_cle"], grams=grammes)
+    info = get_nutritional_info(analyse["plat_cle"])
 
     st.markdown('<div class="result-card">', unsafe_allow_html=True)
     st.markdown(f'<span class="badge">{info["categorie"]}</span>', unsafe_allow_html=True)
-    st.markdown(f"##  {info['nom_fr']}")
-    st.caption(f"Confiance IA : **{analyse['confiance']}** • Portion : **{info['grammes']} g** (portion type conseillée : ~{info['portion_type_g']} g)")
+    st.markdown(f"## {info['nom_fr']}")
+    st.caption(f"Confiance IA : **{analyse['confiance']}** • Basé sur une **portion standard estimée (~{info['portion_g']} g)**")
     st.write(info["description"])
 
-    st.markdown(f'<div class="kcal-big">{info["calories"]} <span style="font-size:1rem;font-weight:500;color:#6b7280;">kcal</span></div>', unsafe_allow_html=True)
-    st.caption(f"Soit ~{round(info['calories'] / max(objectif_kcal, 1) * 100)}% de ton objectif de {objectif_kcal} kcal")
+    st.markdown(
+        f'<div class="kcal-big">{info["calories"]} <span style="font-size:1rem;font-weight:500;color:#6b7280;">kcal (portion standard)</span></div>',
+        unsafe_allow_html=True
+    )
+    st.caption(f"Soit ~{round(info['calories'] / max(objectif_kcal, 1) * 100)}% de ton objectif de {objectif_kcal} kcal ({objectif})")
 
     st.markdown("####  Macronutriments")
     c1, c2, c3 = st.columns(3)
     with c1:
-        st.markdown(f'<div class="macro-box"><div class="macro-val">{info["glucides"]} g</div><div class="macro-lbl">Glucides ({info["pct_glucides"]}% kcal)</div></div>', unsafe_allow_html=True)
+        st.markdown(
+            f'<div class="macro-box"><div class="macro-val">{info["glucides"]} g</div><div class="macro-lbl">Glucides ({info["pct_glucides"]}% kcal)</div></div>',
+            unsafe_allow_html=True
+        )
     with c2:
-        st.markdown(f'<div class="macro-box"><div class="macro-val">{info["proteines"]} g</div><div class="macro-lbl">Protéines ({info["pct_proteines"]}% kcal)</div></div>', unsafe_allow_html=True)
+        st.markdown(
+            f'<div class="macro-box"><div class="macro-val">{info["proteines"]} g</div><div class="macro-lbl">Protéines ({info["pct_proteines"]}% kcal)</div></div>',
+            unsafe_allow_html=True
+        )
     with c3:
-        st.markdown(f'<div class="macro-box"><div class="macro-val">{info["lipides"]} g</div><div class="macro-lbl">Lipides ({info["pct_lipides"]}% kcal)</div></div>', unsafe_allow_html=True)
+        st.markdown(
+            f'<div class="macro-box"><div class="macro-val">{info["lipides"]} g</div><div class="macro-lbl">Lipides ({info["pct_lipides"]}% kcal)</div></div>',
+            unsafe_allow_html=True
+        )
 
     st.markdown("####  Détails complémentaires")
     d1, d2 = st.columns(2)
     d1.metric("Fibres", f"{info['fibres']} g")
     d2.metric("Sucres", f"{info['sucres']} g")
 
-    st.markdown("####  Conseil nutritionnel")
-    st.success(info["conseil"])
+    st.markdown("####  Quoi manger avec / ensuite ?")
+    st.info(info["quoi_manger"])
 
-    if st.button("➕ Ajouter ce repas au journal du jour", use_container_width=True):
+    if st.button(" Ajouter cette portion au journal du jour", use_container_width=True):
         st.session_state.journal.append({
             "nom": info["nom_fr"],
-            "grammes": info["grammes"],
             "calories": info["calories"]
         })
-        st.toast(f"{info['nom_fr']} ({info['grammes']}g) ajouté au journal !")
+        st.toast(f"{info['nom_fr']} ajouté au journal !")
         st.rerun()
 
     st.markdown('</div>', unsafe_allow_html=True)

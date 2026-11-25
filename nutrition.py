@@ -2,110 +2,136 @@ NUTRITION_DB = {
     "beignets": {
         "nom_fr": "Beignets",
         "categorie": "Pâtisserie / Frit",
-        "portion_type_g": 90,
+        "portion_g": 90,
         "calories_100g": 389,
         "proteines_100g": 5.4,
         "glucides_100g": 45.2,
         "lipides_100g": 20.8,
         "fibres_100g": 1.5,
         "sucres_100g": 14.0,
-        "description": "Pâte levée frite dorée et moelleuse, généralement saupoudrée de sucre glace.",
-        "conseil": "Riche en glucides simples et en lipides de friture. À consommer occasionnellement, idéalement accompagné d'un café/thé sans sucre ou d'une source de protéines/fibres au repas suivant."
+        "description": "Pâte levée frite dorée et moelleuse, souvent sucrée.",
+        "quoi_manger": "Évite de les manger seuls le ventre vide (pic de sucre). Accompagne-les d'une boisson non sucrée (café, thé, eau) et, au repas suivant, privilégie des légumes verts + une bonne source de protéines (œufs, poulet, poisson, légumineuses) pour rééquilibrer."
     },
     "apple_pie": {
         "nom_fr": "Tarte aux pommes",
         "categorie": "Dessert / Pâtisserie",
-        "portion_type_g": 140,
+        "portion_g": 140,
         "calories_100g": 237,
         "proteines_100g": 2.4,
         "glucides_100g": 33.9,
         "lipides_100g": 10.6,
         "fibres_100g": 1.6,
         "sucres_100g": 15.5,
-        "description": "Pâte feuilletée ou brisée garnie de pommes fondantes, souvent relevée à la cannelle.",
-        "conseil": "Apport énergétique modéré à élevé surtout issu de la pâte et des sucres. Privilégie une part raisonnable et évite d'ajouter de la glace ou de la crème."
+        "description": "Part de tarte aux pommes dorée avec pâte et garniture aux fruits.",
+        "quoi_manger": "Si tu la prends en dessert ou au goûter, garde une part normale sans boule de glace ni crème. Au repas suivant, mise sur une assiette riche en protéines maigres et fibres (salade composée, légumes cuits, viandes blanches ou poissons)."
     },
     "pizza": {
         "nom_fr": "Pizza",
         "categorie": "Plat principal",
-        "portion_type_g": 180,
+        "portion_g": 220,
         "calories_100g": 266,
         "proteines_100g": 11.0,
         "glucides_100g": 33.0,
         "lipides_100g": 10.0,
         "fibres_100g": 2.3,
         "sucres_100g": 3.6,
-        "description": "Pâte à pain garnie de sauce tomate, fromage et ingrédients variés.",
-        "conseil": "Associe-la à une grande salade verte ou des légumes grillés pour augmenter les fibres et la satiété sans alourdir l'apport calorique."
+        "description": "Portion de pizza (pâte, sauce tomate, fromage et garniture).",
+        "quoi_manger": "Au restaurant, commande une salade verte ou des crudités en entrée pour apporter des fibres et calmer la faim plus vite. Choisis des garnitures riches en protéines (poulet, thon, champignons, légumes) plutôt que trop de charcuterie grasse."
     },
     "hamburger": {
         "nom_fr": "Hamburger",
-        "categorie": "Fast-food / Plat complet",
-        "portion_type_g": 220,
+        "categorie": "Plat complet",
+        "portion_g": 240,
         "calories_100g": 295,
         "proteines_100g": 17.0,
         "glucides_100g": 24.0,
         "lipides_100g": 14.0,
         "fibres_100g": 1.8,
         "sucres_100g": 4.2,
-        "description": "Pain burger, steak haché, fromage, crudités et sauce.",
-        "conseil": "Bonne source de protéines, mais surveille la sauce et l'accompagnement : préfère des légumes ou une petite portion plutôt que des frites."
+        "description": "Burger complet avec pain, steak/protéine, fromage et garniture.",
+        "quoi_manger": "Pour un repas équilibré au restaurant, accompagne le burger de légumes ou d'une petite salade plutôt que de grandes frites, et évite les sodas sucrés (préfère de l'eau ou une boisson zéro)."
     },
     "sushi": {
         "nom_fr": "Sushi",
         "categorie": "Poisson & Riz",
-        "portion_type_g": 200,
+        "portion_g": 220,
         "calories_100g": 150,
         "proteines_100g": 5.8,
         "glucides_100g": 27.5,
         "lipides_100g": 1.6,
         "fibres_100g": 1.2,
         "sucres_100g": 4.5,
-        "description": "Riz vinaigré accompagné de poisson cru ou cuit, algue nori et légumes.",
-        "conseil": "Léger en lipides mais riche en riz blanc : ajoute une soupe miso ou une salade de chou/algues et dose la sauce soja (riche en sodium)."
+        "description": "Assortiment de sushis (riz assaisonné, poisson, nori).",
+        "quoi_manger": "Complète avec une soupe miso, une salade de chou ou d'algues (wakame) et des edamame pour ajouter des fibres et des protéines. Dose la sauce soja pour limiter l'excès de sel."
     },
     "ramen": {
         "nom_fr": "Ramen",
         "categorie": "Soupe & Nouilles",
-        "portion_type_g": 450,
+        "portion_g": 450,
         "calories_100g": 115,
         "proteines_100g": 5.2,
         "glucides_100g": 14.5,
         "lipides_100g": 4.1,
         "fibres_100g": 1.4,
         "sucres_100g": 1.2,
-        "description": "Nouilles de blé dans un bouillon savoureux avec œuf, viande ou légumes.",
-        "conseil": "Le bouillon concentre beaucoup de sel et parfois de graisses : garde les protéines et les légumes, et laisse une partie du bouillon au fond du bol."
+        "description": "Bol de nouilles en bouillon avec garnitures (œuf, viande, légumes).",
+        "quoi_manger": "Mange d'abord les légumes, l'œuf et la viande/protéine, puis les nouilles, et laisse une partie du bouillon au fond du bol si tu veux limiter le sodium et les graisses."
     },
     "caesar_salad": {
         "nom_fr": "Salade César",
-        "categorie": "Salade / Entrée ou plat léger",
-        "portion_type_g": 250,
+        "categorie": "Salade & Protéines",
+        "portion_g": 260,
         "calories_100g": 180,
         "proteines_100g": 8.5,
         "glucides_100g": 7.0,
         "lipides_100g": 13.0,
         "fibres_100g": 2.4,
         "sucres_100g": 1.8,
-        "description": "Laitue romaine, croûtons, parmesan et sauce crémeuse (souvent avec poulet).",
-        "conseil": "Très intéressant si tu ajoutes du poulet grillé pour les protéines, mais demande la sauce à part pour maîtriser les lipides."
+        "description": "Salade romaine, croûtons, parmesan et sauce César.",
+        "quoi_manger": "Ajoute du poulet grillé, du saumon ou des œufs durs si tu veux plus de protéines et de satiété, et demande la sauce à part pour ajuster la quantité."
     },
     "waffles": {
         "nom_fr": "Gaufres",
-        "categorie": "Petit-déjeuner / Pâtisserie",
-        "portion_type_g": 110,
+        "categorie": "Petit-déjeuner / Dessert",
+        "portion_g": 120,
         "calories_100g": 291,
         "proteines_100g": 7.9,
         "glucides_100g": 33.0,
         "lipides_100g": 14.1,
         "fibres_100g": 1.7,
         "sucres_100g": 8.5,
-        "description": "Pâte cuite dans un gaufrier à alvéoles caractéristiques, croustillante dehors et moelleuse dedans.",
-        "conseil": "Équilibre avec des fruits frais ou un yaourt grec nature plutôt que beaucoup de pâte à tartiner ou de sirop très sucré."
+        "description": "Gaufre dorée cuite au gaufrier.",
+        "quoi_manger": "Associe-la à des fruits frais (fraises, banane, myrtilles) ou un yaourt grec / fromage blanc pour apporter des protéines et limiter l'excès de sucre."
     }
 }
 
-def get_nutritional_info(dish_key: str, grams: float = 100.0) -> dict:
+
+def calculer_besoin_calorique(poids_kg: float, taille_cm: float, age: int, sexe: str, activite: str, objectif: str) -> int:
+    # Formule de Mifflin-St Jeor
+    if sexe == "Femme":
+        bmr = 10 * poids_kg + 6.25 * taille_cm - 5 * age - 161
+    else:
+        bmr = 10 * poids_kg + 6.25 * taille_cm - 5 * age + 5
+
+    facteurs_activite = {
+        "Sédentaire (peu ou pas d'exercice)": 1.2,
+        "Légèrement actif (1–3j/semaine)": 1.375,
+        "Modérément actif (3–5j/semaine)": 1.55,
+        "Très actif (6–7j/semaine)": 1.725,
+    }
+    tdee = bmr * facteurs_activite.get(activite, 1.375)
+
+    if objectif == "Perdre du poids":
+        cible = tdee - 400
+    elif objectif == "Masse musculaire":
+        cible = tdee + 300
+    else:  # Juste savoir / Maintien
+        cible = tdee
+
+    return max(1200, int(round(cible / 10.0) * 10))
+
+
+def get_nutritional_info(dish_key: str) -> dict:
     key = dish_key.lower().strip().replace(" ", "_")
     base = NUTRITION_DB.get(key)
 
@@ -114,18 +140,19 @@ def get_nutritional_info(dish_key: str, grams: float = 100.0) -> dict:
         base = {
             "nom_fr": nom_propre,
             "categorie": "Plat Food-101",
-            "portion_type_g": 150,
+            "portion_g": 180,
             "calories_100g": 220,
             "proteines_100g": 9.0,
             "glucides_100g": 24.0,
             "lipides_100g": 9.5,
             "fibres_100g": 2.0,
             "sucres_100g": 4.0,
-            "description": f"Plat identifié comme {nom_propre}. Les valeurs ci-dessous sont une estimation générique pour {int(grams)} g.",
-            "conseil": "Associe ce plat à des légumes riches en fibres et une source de protéines maigres pour maintenir une bonne satiété."
+            "description": f"Plat identifié comme {nom_propre}. Estimation calculée sur une portion standard.",
+            "quoi_manger": "Pour équilibrer ce plat : accompagne-le d'une portion de légumes riches en fibres, assure-toi d'avoir une source de protéines (viande, poisson, œufs, légumineuses) et garde une hydratation régulière."
         }
 
-    factor = max(grams, 0.0) / 100.0
+    grammes = base["portion_g"]
+    factor = grammes / 100.0
 
     calories = round(base["calories_100g"] * factor)
     proteines = round(base["proteines_100g"] * factor, 1)
@@ -134,7 +161,6 @@ def get_nutritional_info(dish_key: str, grams: float = 100.0) -> dict:
     fibres = round(base["fibres_100g"] * factor, 1)
     sucres = round(base["sucres_100g"] * factor, 1)
 
-    # Estimation de la répartition calorique (%) : Protéines 4 kcal/g, Glucides 4 kcal/g, Lipides 9 kcal/g
     kcal_p = proteines * 4.0
     kcal_g = glucides * 4.0
     kcal_l = lipides * 9.0
@@ -143,10 +169,9 @@ def get_nutritional_info(dish_key: str, grams: float = 100.0) -> dict:
     return {
         "nom_fr": base["nom_fr"],
         "categorie": base["categorie"],
-        "portion_type_g": base["portion_type_g"],
-        "grammes": int(grams),
+        "portion_g": grammes,
         "description": base["description"],
-        "conseil": base["conseil"],
+        "quoi_manger": base["quoi_manger"],
         "calories": calories,
         "proteines": proteines,
         "glucides": glucides,
