@@ -7,7 +7,7 @@ import torch.nn as nn
 from torchvision import models, transforms
 from nutrition import calculer_besoin_calorique, get_nutritional_info
 
-# Remplace cette URL par le lien exact de ton fichier model-food.pth dans GitHub Releases
+# Remplace cette URL par le lien direct exact vers model-food.pth dans ta GitHub Release
 MODEL_URL = "https://github.com/marwa13-ai/Food-Recognition-and-Calorie-Estimation/releases/download/v1.0-model/model-food.pth"
 MODEL_PATH = "model-food.pth"
 
@@ -78,6 +78,12 @@ st.markdown("""
         font-size: 0.8rem;
         color: #6b7280;
     }
+    .advice-step {
+        color: #1f2937;
+        font-size: 0.96rem;
+        line-height: 1.6;
+        margin-bottom: 0.75rem;
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -111,37 +117,45 @@ transform = transforms.Compose([
 ])
 
 
-def ensure_model_downloaded() -> bool:
+def ensure_model_downloaded():
     if os.path.exists(MODEL_PATH) and os.path.getsize(MODEL_PATH) > 1_000_000:
-        return True
-    if "TON_USER" in MODEL_URL or "TON_REPO" in MODEL_URL:
-        return False
+        return True, "OK"
+    if not MODEL_URL or "TON_USER" in MODEL_URL or "TON_REPO" in MODEL_URL:
+        return False, "MODEL_URL non configurée"
     try:
-        urllib.request.urlretrieve(MODEL_URL, MODEL_PATH)
-        return os.path.exists(MODEL_PATH) and os.path.getsize(MODEL_PATH) > 1_000_000
-    except Exception:
-        return False
+        req = urllib.request.Request(MODEL_URL, headers={"User-Agent": "Mozilla/5.0"})
+        with urllib.request.urlopen(req, timeout=90) as resp, open(MODEL_PATH, "wb") as out:
+            out.write(resp.read())
+        size = os.path.getsize(MODEL_PATH) if os.path.exists(MODEL_PATH) else 0
+        if size <= 1_000_000:
+            if os.path.exists(MODEL_PATH):
+                os.remove(MODEL_PATH)
+            return False, f"Fichier incomplet ({size} octets) — vérifie MODEL_URL"
+        return True, "OK"
+    except Exception as e:
+        if os.path.exists(MODEL_PATH):
+            os.remove(MODEL_PATH)
+        return False, f"Échec téléchargement : {e}"
 
 
 @st.cache_resource
 def load_model():
-    if not ensure_model_downloaded():
-        return None
+    ok, msg = ensure_model_downloaded()
+    if not ok:
+        return None, msg
 
     model = models.resnet50(weights=None)
-    num_features = model.fc.in_features
-    model.fc = nn.Linear(num_features, len(CLASSES_FOOD101))
+    model.fc = nn.Linear(model.fc.in_features, len(CLASSES_FOOD101))
 
     try:
-        device = torch.device("cpu")
-        state_dict = torch.load(MODEL_PATH, map_location=device)
+        state_dict = torch.load(MODEL_PATH, map_location=torch.device("cpu"))
         model.load_state_dict(state_dict)
         model.eval()
-        return model
-    except Exception:
+        return model, "OK"
+    except Exception as e:
         if os.path.exists(MODEL_PATH):
             os.remove(MODEL_PATH)
-        return None
+        return None, f"Échec torch.load : {e}"
 
 
 if "journal" not in st.session_state:
@@ -149,7 +163,7 @@ if "journal" not in st.session_state:
 
 # Barre latérale gauche : Profil, Objectif & Journal
 with st.sidebar:
-    st.header(" Ton profil & objectif")
+    st.header("👤 Ton profil & objectif")
     taille_cm = st.number_input("Taille (cm)", min_value=120, max_value=230, value=168, step=1)
     poids_kg = st.number_input("Poids (kg)", min_value=35.0, max_value=220.0, value=65.0, step=0.5)
     age = st.number_input("Âge", min_value=14, max_value=100, value=22, step=1)
@@ -195,16 +209,16 @@ with st.sidebar:
 # Zone principale droite
 st.markdown("""
 <div class="main-header">
-    <h1> CalorieLens AI</h1>
+    <h1>🥗 CalorieLens AI</h1>
     <p>Reconnaissance de plat, calories sur portion standard et conseils repas</p>
 </div>
 """, unsafe_allow_html=True)
 
-model = load_model()
+model, model_status = load_model()
 if model is None:
-    st.caption("Mode démonstration actif (`model-food.pth` non chargé sur cet environnement).")
+    st.caption(f"Mode démonstration actif ({model_status}).")
 
-uploaded_file = st.file_uploader("📸 Prends ou importe la photo de ton plat", type=["jpg", "jpeg", "png"])
+uploaded_file = st.file_uploader(" Prends ou importe la photo de ton plat", type=["jpg", "jpeg", "png"])
 
 if uploaded_file is not None:
     image = Image.open(uploaded_file).convert("RGB")
@@ -235,7 +249,7 @@ if "derniere_analyse" in st.session_state:
 
     st.markdown('<div class="result-card">', unsafe_allow_html=True)
     st.markdown(f'<span class="badge">{info["categorie"]}</span>', unsafe_allow_html=True)
-    st.markdown(f"## {info['nom_fr']}")
+    st.markdown(f"##  {info['nom_fr']}")
     st.caption(f"Confiance IA : **{analyse['confiance']}** • Basé sur une **portion standard estimée (~{info['portion_g']} g)**")
     st.write(info["description"])
 
@@ -269,7 +283,11 @@ if "derniere_analyse" in st.session_state:
     d2.metric("Sucres", f"{info['sucres']} g")
 
     st.markdown("####  Quoi manger avec / ensuite ?")
-    st.info(info["quoi_manger"])
+    st.markdown(
+        f'<p class="advice-step"><strong>1. Avec ce plat :</strong> {info["avec"]}</p>'
+        f'<p class="advice-step"><strong>2. Au repas suivant (ensuite) :</strong> {info["ensuite"]}</p>',
+        unsafe_allow_html=True
+    )
 
     if st.button(" Ajouter cette portion au journal du jour", use_container_width=True):
         st.session_state.journal.append({
